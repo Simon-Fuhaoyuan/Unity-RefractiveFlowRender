@@ -1,0 +1,14 @@
+Images/
+Images
+Objects/
+Objects
+Primitives
+TODO
+*.txt
+*__pycache__/
+*.pyc
+*runtime*
+counter
+Debug_Objects/
+*Debug/
+data/setting.pov

@@ -1,0 +1,12 @@
+Assets/Meshes*
+Assets/Prefabs*
+Assets/Resources/HDRIImages*
+Assets/Scenes/SampleScene*
+.vscode/
+
+Library/
+Logs/
+obj/
+Temp/
+train/
+valid/

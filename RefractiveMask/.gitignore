@@ -1,0 +1,10 @@
+Assets/Meshes*
+Assets/Prefabs*
+.vscode/
+
+Library/
+Logs/
+obj/
+Temp/
+train/
+valid/
