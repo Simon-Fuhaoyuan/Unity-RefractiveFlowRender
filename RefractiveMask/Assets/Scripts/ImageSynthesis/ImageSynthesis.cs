@@ -21,8 +21,8 @@ public class ImageSynthesis : MonoBehaviour {
 	// pass configuration
 	private CapturePass[] capturePasses = new CapturePass[] {
 		new CapturePass() { name = "_img" },
-		new CapturePass() { name = "_id", supportsAntialiasing = false },
-		new CapturePass() { name = "_layer", supportsAntialiasing = false },
+		new CapturePass() { name = "_img", supportsAntialiasing = false },
+		new CapturePass() { name = "_category", supportsAntialiasing = false },
 		new CapturePass() { name = "_depth" },
 		new CapturePass() { name = "_normals" },
 		new CapturePass() { name = "_flow", supportsAntialiasing = false, needsRescale = true } // (see issue with Motion Vectors in @KNOWN ISSUES)
@@ -73,6 +73,7 @@ public class ImageSynthesis : MonoBehaviour {
 		#endif // UNITY_EDITOR
 
 		// @TODO: detect if camera properties actually changed
+		OnSceneChange();
 		OnCameraChange();
 	}
 	
@@ -144,7 +145,7 @@ public class ImageSynthesis : MonoBehaviour {
 		opticalFlowMaterial.SetFloat("_Sensitivity", opticalFlowSensitivity);
 
 		// setup command buffers and replacement shaders
-		SetupCameraWithReplacementShader(capturePasses[1].camera, uberReplacementShader, ReplacelementModes.ObjectId);
+		SetupCameraWithReplacementShader(capturePasses[1].camera, uberReplacementShader, ReplacelementModes.ObjectId, Color.white);
 		SetupCameraWithReplacementShader(capturePasses[2].camera, uberReplacementShader, ReplacelementModes.CatergoryId);
 		SetupCameraWithReplacementShader(capturePasses[3].camera, uberReplacementShader, ReplacelementModes.DepthCompressed, Color.white);
 		SetupCameraWithReplacementShader(capturePasses[4].camera, uberReplacementShader, ReplacelementModes.Normals);
@@ -162,8 +163,10 @@ public class ImageSynthesis : MonoBehaviour {
 			var layer = r.gameObject.layer;
 			var tag = r.gameObject.tag;
 
-			mpb.SetColor("_ObjectColor", ColorEncoding.EncodeIDAsColor(id));
-			mpb.SetColor("_CategoryColor", ColorEncoding.EncodeLayerAsColor(layer, grayscale));
+			string category = r.gameObject.name.Split(new char[1]{'_'})[0];
+
+			mpb.SetColor("_ObjectColor", Color.black);
+			mpb.SetColor("_CategoryColor", ColorEncoding.EncodeTagAsColor(category));
 			r.SetPropertyBlock(mpb);
 		}
 	}
@@ -186,6 +189,7 @@ public class ImageSynthesis : MonoBehaviour {
 		// execute as coroutine to wait for the EndOfFrame before starting capture
 		StartCoroutine(
 			WaitForEndOfFrameAndSave(pathWithoutExtension, filenameExtension, width, height, specificPass));
+		// Save(pathWithoutExtension, filenameExtension, width, height, specificPass);
 	}
 
 	private IEnumerator WaitForEndOfFrameAndSave(string filenameWithoutExtension, string filenameExtension, int width, int height, int specificPass)
@@ -201,7 +205,7 @@ public class ImageSynthesis : MonoBehaviour {
 		    	Save(pass.camera, filenameWithoutExtension + pass.name + filenameExtension, width, height, pass.supportsAntialiasing, pass.needsRescale);
         } else {
             var pass = capturePasses[0];
-		    Save(pass.camera, filenameWithoutExtension + pass.name + filenameExtension, width, height, pass.supportsAntialiasing, pass.needsRescale);
+		    // Save(pass.camera, filenameWithoutExtension + pass.name + filenameExtension, width, height, pass.supportsAntialiasing, pass.needsRescale);
             pass = capturePasses[specificPass];
 		    Save(pass.camera, filenameWithoutExtension + pass.name + filenameExtension, width, height, pass.supportsAntialiasing, pass.needsRescale);
         }
