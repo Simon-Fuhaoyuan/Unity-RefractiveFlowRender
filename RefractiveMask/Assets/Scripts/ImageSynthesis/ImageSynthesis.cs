@@ -67,14 +67,7 @@ public class ImageSynthesis : MonoBehaviour {
 
 	void LateUpdate()
 	{
-		#if UNITY_EDITOR
-		if (DetectPotentialSceneChangeInEditor())
-			OnSceneChange();
-		#endif // UNITY_EDITOR
-
-		// @TODO: detect if camera properties actually changed
-		OnSceneChange();
-		OnCameraChange();
+		
 	}
 	
 	private Camera CreateHiddenCamera(string name)
@@ -189,7 +182,6 @@ public class ImageSynthesis : MonoBehaviour {
 		// execute as coroutine to wait for the EndOfFrame before starting capture
 		StartCoroutine(
 			WaitForEndOfFrameAndSave(pathWithoutExtension, filenameExtension, width, height, specificPass));
-		// Save(pathWithoutExtension, filenameExtension, width, height, specificPass);
 	}
 
 	private IEnumerator WaitForEndOfFrameAndSave(string filenameWithoutExtension, string filenameExtension, int width, int height, int specificPass)
@@ -202,12 +194,12 @@ public class ImageSynthesis : MonoBehaviour {
 	{
         if (specificPass == -1) {
 		    foreach (var pass in capturePasses)
-		    	Save(pass.camera, filenameWithoutExtension + pass.name + filenameExtension, width, height, pass.supportsAntialiasing, pass.needsRescale);
+		    	Save(pass.camera, filenameWithoutExtension + filenameExtension, width, height, pass.supportsAntialiasing, pass.needsRescale);
         } else {
             var pass = capturePasses[0];
 		    // Save(pass.camera, filenameWithoutExtension + pass.name + filenameExtension, width, height, pass.supportsAntialiasing, pass.needsRescale);
             pass = capturePasses[specificPass];
-		    Save(pass.camera, filenameWithoutExtension + pass.name + filenameExtension, width, height, pass.supportsAntialiasing, pass.needsRescale);
+		    Save(pass.camera, filenameWithoutExtension + filenameExtension, width, height, pass.supportsAntialiasing, pass.needsRescale);
         }
 	}
 

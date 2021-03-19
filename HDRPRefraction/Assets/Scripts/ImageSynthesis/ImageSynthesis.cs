@@ -201,9 +201,9 @@ public class ImageSynthesis : MonoBehaviour {
 		    	Save(pass.camera, filenameWithoutExtension + pass.name + filenameExtension, width, height, pass.supportsAntialiasing, pass.needsRescale);
         } else {
             var pass = capturePasses[0];
-		    Save(pass.camera, filenameWithoutExtension + pass.name + filenameExtension, width, height, pass.supportsAntialiasing, pass.needsRescale);
+		    Save(pass.camera, filenameWithoutExtension + filenameExtension, width, height, pass.supportsAntialiasing, pass.needsRescale);
             pass = capturePasses[specificPass];
-		    Save(pass.camera, filenameWithoutExtension + pass.name + filenameExtension, width, height, pass.supportsAntialiasing, pass.needsRescale);
+		    Save(pass.camera, filenameWithoutExtension + filenameExtension, width, height, pass.supportsAntialiasing, pass.needsRescale);
         }
 	}
 

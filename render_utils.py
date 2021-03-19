@@ -2,6 +2,8 @@ from scipy.misc import imread, imsave
 import matplotlib
 import numpy as np
 import os
+from PIL import Image
+from tqdm import tqdm
 
 def makeFile(f):
     if not os.path.exists(f):
@@ -87,3 +89,23 @@ def writeFlowBinary(flow, filename, short=True):
         h_w.tofile(f)
         flow.tofile(f)
 
+def binaryImage(dir):
+    threshold = 150
+    table = []
+    for i in range(256):
+        if i < threshold:
+            table.append(0)
+        else:
+            table.append(1)
+
+    img_names = os.listdir(dir)
+    for filename in img_names:
+        filename = os.path.join(dir, filename)
+        img = Image.open(filename)
+        img = img.convert('L')
+        image = img.point(table, '1')
+        image.save(filename)
+
+
+if __name__ == '__main__':
+    binaryImage('./HDRPRefraction/train/calibration/0')

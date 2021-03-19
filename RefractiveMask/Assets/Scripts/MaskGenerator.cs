@@ -40,7 +40,7 @@ public class MaskGenerator: MonoBehaviour
         numberOfMasks = recordFiles.Length;
 
         switch_ = false;
-        Application.targetFrameRate = 30;
+        // Application.targetFrameRate = 30;
         currentImageId = "";
         currentCalibrationFolder = "";
     }
@@ -64,6 +64,9 @@ public class MaskGenerator: MonoBehaviour
             currentCalibrationFolder = Path.Combine(calibrationFolder, currentImageId);
             recordFile = Path.Combine(recordFolder, recordFile);
             ArrangeScene(recordFile);
+
+            imageSynthesis.OnSceneChange();
+            imageSynthesis.OnCameraChange();
             
             imageSynthesis.Save("0.png", 512, 512, currentCalibrationFolder, 1);
             imageSynthesis.Save(string.Format("mask_{0}.png", currentImageId), 512, 512, maskFolder, 2);

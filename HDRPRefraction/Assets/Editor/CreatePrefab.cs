@@ -62,14 +62,14 @@ public class GenerateRigidbodyPrefab: MonoBehaviour
         {
             return false;
         }
-        int numMaterials = meshRenderer.sharedMaterials.Length;
-        Material[] sharedMaterials = new Material[numMaterials];
-        Material glass = Resources.Load("Glass", typeof(Material)) as Material;
-        for (int j = 0; j < numMaterials; ++j)
-        {
-            sharedMaterials[j] = glass;
-        }
-        meshRenderer.sharedMaterials = sharedMaterials;
+        // int numMaterials = meshRenderer.sharedMaterials.Length;
+        // Material[] sharedMaterials = new Material[numMaterials];
+        // Material glass = Resources.Load("Glass", typeof(Material)) as Material;
+        // for (int j = 0; j < numMaterials; ++j)
+        // {
+        //     sharedMaterials[j] = glass;
+        // }
+        // meshRenderer.sharedMaterials = sharedMaterials;
 
         string prefabPath = Path.Combine(targetFolder, prefabName + prefabSuffix);
         PrefabUtility.SaveAsPrefabAsset(meshFilter.gameObject, prefabPath);

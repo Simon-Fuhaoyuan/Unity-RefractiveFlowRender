@@ -200,10 +200,12 @@ public class Calibrator : MonoBehaviour
             Material glassMat = LoadGlassMaterial(i + 1, recorder.IORs[i]);
             MeshRenderer meshRenderer = prefab.GetComponent<MeshRenderer>();
             int length = meshRenderer.materials.Length;
+            Material[] materials = new Material[length];
             for (int j = 0; j < length; ++j)
             {
-                meshRenderer.materials[j] = glassMat;
+                materials[j] = glassMat;
             }
+            meshRenderer.materials = materials;
 
             prefabs.Add(prefab);
         }

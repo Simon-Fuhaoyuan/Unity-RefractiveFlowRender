@@ -3,10 +3,12 @@ import numpy as np
 from scipy.misc import imread, imsave
 import imageio
 import render_utils as utils
+from tqdm import tqdm
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--in_root',  default='/home/gein/Code/rendering_script/test/test_graycode/')
-parser.add_argument('--in_dir',   default='graycode')
+parser.add_argument('mode')
+parser.add_argument('--in_root',  default='')
+parser.add_argument('--in_dir',   default='')
 parser.add_argument('--out_dir',  default='')
 parser.add_argument('--reload',   action='store_false', default=False)
 parser.add_argument('--mute',     action='store_false', default=True)
@@ -107,15 +109,29 @@ def checkImgNumber(imgs):
         raise Exception('Not correct image number: %dX%dX%d' % (img_num, h, w))
 
 if __name__ == '__main__':
-    args.in_dir  = os.path.join(args.in_root, args.in_dir)
-    imgs = readImgOrLoadNpy()
-    checkImgNumber(imgs)
+    if args.mode == 'train':
+        args.in_root = './HDRPRefraction/train/calibration/'
+    elif args.mode == 'valid':
+        args.in_root = './HDRPRefraction/valid/calibration/'
+    else:
+        print('Error mode!')
+        exit()
+    
+    in_dirs = os.listdir(args.in_root)
+    for in_dir in in_dirs:
+        if in_dir == 'refractive_flow':
+            continue
+        args.in_dir = os.path.join(args.in_root, in_dir)
+        print('Start converting for {}'.format(args.in_dir))
+        utils.binaryImage(args.in_dir)
+        imgs = readImgOrLoadNpy()
+        checkImgNumber(imgs)
 
-    args.out_name = '%s_flow' % (os.path.basename(args.in_dir))
-    if args.out_dir == '':
-        args.out_dir = os.path.join(args.in_root, 'correspondence')
-    print(args.out_dir)
-    utils.makeFile(args.out_dir)
-    calibrator = FlowCalibrator(imgs)
-    calibrator.findCorrespondence()
+        args.out_name = '%s_flow' % (os.path.basename(args.in_dir))
+        if args.out_dir == '':
+            args.out_dir = os.path.join(args.in_root, 'refractive_flow')
+        print(args.out_dir)
+        utils.makeFile(args.out_dir)
+        calibrator = FlowCalibrator(imgs)
+        calibrator.findCorrespondence()
 

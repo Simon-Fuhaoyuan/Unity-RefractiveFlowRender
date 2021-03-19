@@ -304,12 +304,15 @@ public class RGBGenerator : MonoBehaviour
             // Randomize IOR
             float IOR = RandomFloat(IORLowerBound, IORUpperBound);
             MeshRenderer meshRenderer = prefab.GetComponent<MeshRenderer>();
-            Material glassMat = LoadGlassMaterial(i + 1, IOR);
+
             int length = meshRenderer.materials.Length;
+            Material[] materials = new Material[length];
+            Material glassMat = LoadGlassMaterial(i + 1, IOR);
             for (int j = 0; j < length; ++j)
             {
-                meshRenderer.materials[j] = glassMat;
+                materials[j] = glassMat;
             }
+            meshRenderer.materials = materials;
 
             recorder.categories.Add(category);
             recorder.prefabPaths.Add(prefabPath);

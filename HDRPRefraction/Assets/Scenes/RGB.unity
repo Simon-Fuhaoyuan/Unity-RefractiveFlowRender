@@ -674,12 +674,16 @@ MonoBehaviour:
   - {fileID: 1595652214}
   isTrain: 1
   trainWeight: 0.7
-  recordFile: record_data.txt
   categories:
   - bottle
   - bowl
-  - cabinet
-  numberOfPrefabs: f0010000ba00000024060000
+  - box
+  - can
+  - jar
+  - jug
+  - mug
+  - wine_bottle
+  numberOfPrefabs: 59010000ba000000520000006c0000007100000019000000d600000080000000
   numberOfSkyboxes: 437
   numberOfObjectsLowerBound: 3
   numberOfObjectsUpperBound: 6
