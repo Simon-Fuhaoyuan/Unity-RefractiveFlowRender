@@ -118,11 +118,11 @@ if __name__ == '__main__':
         exit()
     
     in_dirs = os.listdir(args.in_root)
-    for in_dir in in_dirs:
+    for in_dir in tqdm(in_dirs):
         if in_dir == 'refractive_flow':
             continue
         args.in_dir = os.path.join(args.in_root, in_dir)
-        print('Start converting for {}'.format(args.in_dir))
+        # print('Start converting for {}'.format(args.in_dir))
         utils.binaryImage(args.in_dir)
         imgs = readImgOrLoadNpy()
         checkImgNumber(imgs)
@@ -130,7 +130,7 @@ if __name__ == '__main__':
         args.out_name = '%s_flow' % (os.path.basename(args.in_dir))
         if args.out_dir == '':
             args.out_dir = os.path.join(args.in_root, 'refractive_flow')
-        print(args.out_dir)
+        # print(args.out_dir)
         utils.makeFile(args.out_dir)
         calibrator = FlowCalibrator(imgs)
         calibrator.findCorrespondence()

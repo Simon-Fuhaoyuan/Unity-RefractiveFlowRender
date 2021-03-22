@@ -93,6 +93,7 @@ public class RGBGenerator : MonoBehaviour
         
         if (!switch_)
         {
+            Resources.UnloadAsset(sky.hdriSky.value);
             RandomizeSkybox();
             RandomizeCamera();
             RandomizeObjects();

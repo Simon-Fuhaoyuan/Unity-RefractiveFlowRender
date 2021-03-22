@@ -40,7 +40,7 @@ def natural_keys(text):
     return [ atoi(c) for c in re.split('(\d+)', text) ]
 
 def readImgFromList(img_list):
-    print('Reading images from list')
+    # print('Reading images from list')
     checkEmpty(img_list)
     imgs = []
     for i, img_name in enumerate(img_list):
@@ -54,7 +54,7 @@ def rgb2gray(rgb):
     return np.uint8(np.dot(rgb[...,:], [0.299, 0.587, 0.114]))
 
 def listRgb2Gray(imgs):
-    print('Converting list of rgb images to gray images')
+    # print('Converting list of rgb images to gray images')
     for i in range(len(imgs)):
         imgs[i] = rgb2gray(imgs[i])
 

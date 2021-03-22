@@ -697,8 +697,8 @@ MonoBehaviour:
   rotationUpperBound: 180
   IORLowerBound: 1.3
   IORUpperBound: 1.5
-  startImageIndex: 0
-  numberOfImages: 20
+  startImageIndex: 5050
+  numberOfImages: 10000
   prefabFolder: Assets/Prefabs
 --- !u!1 &1232639108
 GameObject:

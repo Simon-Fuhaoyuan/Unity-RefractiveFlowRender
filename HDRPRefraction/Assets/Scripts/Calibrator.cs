@@ -47,6 +47,15 @@ public class Calibrator : MonoBehaviour
         calibrationFolder = Path.Combine(baseRoot, "calibration");
         MakeDirectory(calibrationFolder);
 
+        // If calibration/refractive_flow is created, do not cover it.
+        string refractiveFlowFolder = Path.Combine(calibrationFolder, "refractive_flow");
+        DirectoryInfo refractiveFlowInfo = new DirectoryInfo(refractiveFlowFolder);
+        if (refractiveFlowInfo.Exists)
+        {
+            legal = false;
+            Debug.LogError("Refractive flow has been created, please check train or valid!");
+        }
+
         DirectoryInfo recordInfo = new DirectoryInfo(recordFolder);
         recordFiles = recordInfo.GetFiles();
         // foreach (FileInfo info in recordFiles)

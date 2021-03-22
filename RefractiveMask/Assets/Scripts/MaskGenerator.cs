@@ -144,6 +144,15 @@ public class MaskGenerator: MonoBehaviour
             Debug.LogError("No calibration folder, do you finish calibrating?");
             legal = false;
         }
+
+        // If calibration/refractive_flow is created, do not cover it.
+        string refractiveFlowFolder = Path.Combine(calibrationFolder, "refractive_flow");
+        DirectoryInfo refractiveFlowInfo = new DirectoryInfo(refractiveFlowFolder);
+        if (refractiveFlowInfo.Exists)
+        {
+            legal = false;
+            Debug.LogError("Refractive flow has been created, please check train or valid!");
+        }
     }
     void DestroyAllObjects()
     {
