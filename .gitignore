@@ -11,6 +11,9 @@
 /[Mm]emoryCaptures/
 /[Tt]rain/
 /[Vv]alid/
+/[Mm]anual/
+
+HDRPRefraction/manual/
 
 # Asset meta data should only be ignored when the corresponding asset is also ignored
 !/[Aa]ssets/**/*.meta

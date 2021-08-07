@@ -113,25 +113,50 @@ if __name__ == '__main__':
         args.in_root = './HDRPRefraction/train/calibration/'
     elif args.mode == 'valid':
         args.in_root = './HDRPRefraction/valid/calibration/'
+    elif args.mode == 'manual':
+        args.in_root = './HDRPRefraction/manual/'
     else:
         print('Error mode!')
         exit()
     
-    in_dirs = os.listdir(args.in_root)
-    for in_dir in tqdm(in_dirs):
-        if in_dir == 'refractive_flow':
-            continue
-        args.in_dir = os.path.join(args.in_root, in_dir)
-        # print('Start converting for {}'.format(args.in_dir))
-        utils.binaryImage(args.in_dir)
-        imgs = readImgOrLoadNpy()
-        checkImgNumber(imgs)
+    if args.mode == 'manual':
+        in_root = args.in_root
+        objects = os.listdir(in_root)
+        for object_name in tqdm(objects):
+            args.in_root = os.path.join(in_root, object_name, 'calibration')
+            in_dirs = os.listdir(args.in_root)
+            for in_dir in in_dirs:
+                if in_dir == 'refractive_flow':
+                    continue
+                args.in_dir = os.path.join(args.in_root, in_dir)
+                # print('Start converting for {}'.format(args.in_dir))
+                utils.binaryImage(args.in_dir)
+                imgs = readImgOrLoadNpy()
+                checkImgNumber(imgs)
 
-        args.out_name = '%s_flow' % (os.path.basename(args.in_dir))
-        if args.out_dir == '':
-            args.out_dir = os.path.join(args.in_root, 'refractive_flow')
-        # print(args.out_dir)
-        utils.makeFile(args.out_dir)
-        calibrator = FlowCalibrator(imgs)
-        calibrator.findCorrespondence()
+                args.out_name = '%s_flow' % object_name
+                if args.out_dir == '':
+                    args.out_dir = os.path.join(in_root, 'refractive_flow')
+                # print(args.out_dir)
+                utils.makeFile(args.out_dir)
+                calibrator = FlowCalibrator(imgs)
+                calibrator.findCorrespondence()
+    else:
+        in_dirs = os.listdir(args.in_root)
+        for in_dir in tqdm(in_dirs):
+            if in_dir == 'refractive_flow':
+                continue
+            args.in_dir = os.path.join(args.in_root, in_dir)
+            # print('Start converting for {}'.format(args.in_dir))
+            utils.binaryImage(args.in_dir)
+            imgs = readImgOrLoadNpy()
+            checkImgNumber(imgs)
+
+            args.out_name = '%s_flow' % (os.path.basename(args.in_dir))
+            if args.out_dir == '':
+                args.out_dir = os.path.join(args.in_root, 'refractive_flow')
+            # print(args.out_dir)
+            utils.makeFile(args.out_dir)
+            calibrator = FlowCalibrator(imgs)
+            calibrator.findCorrespondence()
 

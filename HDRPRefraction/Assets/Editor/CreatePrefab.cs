@@ -99,7 +99,7 @@ public class GenerateRigidbodyPrefab: MonoBehaviour
     //     }
     // }
     
-    [MenuItem("Assets/Create Prefabs")]
+    [MenuItem("Assets/Create Prefabs/Create Prefabs With Subfolders")]
     // The file system should be like this:
     // ROOT (this is what you select)
     // |-- MeshName1
@@ -158,6 +158,58 @@ public class GenerateRigidbodyPrefab: MonoBehaviour
                 {
                     Debug.Log(string.Format("Convertion on {0} failed!", meshPath));
                 }
+            }
+        }
+    }
+
+    [MenuItem("Assets/Create Prefabs/Create Prefabs Without Subfolders")]
+    // The file system should be like this:
+    // ROOT (this is what you select)
+    // |-- xxx.obj (or xxx.dae, xxx.fbx, ...)
+    // |-- xxx.obj (or xxx.dae, xxx.fbx, ...)
+    // `-- ...
+    static void CreatePrefabsFromSelectedFolderWOSubfolder()
+    {
+        counter = 1;
+        if (Selection.assetGUIDs.Length == 0)
+        {
+            Debug.Log("Didn't create any prefabs; Nothing was selected!");
+            return;
+        }
+        else if (Selection.assetGUIDs.Length > 1)
+        {
+            Debug.Log("Please select one folder!");
+            return;
+        }
+
+        // Check validation of ROOT
+        string rootFolderPath = AssetDatabase.GUIDToAssetPath(Selection.assetGUIDs[0]);
+        DirectoryInfo rootInfo = new DirectoryInfo(rootFolderPath);
+        if (!rootInfo.Exists)
+        {
+            Debug.Log("You are not selecting a folder!");
+            return;
+        }
+        // Debug.Log(rootInfo.Name);
+        string category = rootInfo.Name;
+
+        // Get all MeshNames and deal with them.
+        FileInfo[] meshNames = rootInfo.GetFiles();
+        foreach (FileInfo fileInfo in meshNames)
+        {
+            // Debug.Log(meshNameInfo.Name);
+            if (!legalExtensions.Contains(fileInfo.Extension))
+            {
+                continue;
+            }
+            string meshPath = Path.Combine(rootFolderPath, fileInfo.Name);
+            if (GenerateRigidbodyPrefab.CreatePrefabFromPath(meshPath, category))
+            {
+                counter += 1;
+            }
+            else
+            {
+                Debug.Log(string.Format("Convertion on {0} failed!", meshPath));
             }
         }
     }
