@@ -28,3 +28,31 @@ python generate_refractive_flow.py valid
 ```
 
 This command will generate ground truth for refractive flow. All ground truths will be saved in `calibration/refractive_flow` folder.
+
+## Usage for `manual` mode
+
+This function is for generating refractive flow for real objects. In this function, we discard the randomization of object position, rotation, camera view, etc. We only focus on the refractive flow itself. This is also a helpful way for visualizing refractive flow of any mesh.
+
+### 1. Generate calibration images
+
+This function starts from generating calibration images. In preparation of meshes, please generate prefabs into folder `Assets/Prefabs/manual`. 
+
+Open Unity scene `CalibrationManually`. There's an object named `Controller` which controls the generation process. In this controller, you can modify IOR of transparent objects. In this scene, you need to put your target mesh to a suitable position so that it can be photoed from main camera. Then, drag this object to the `Prefab` option of `Controller`. Finally, click `Run` button and you will see a calibration process begins.
+
+The calibration information will be stored in `HDRPRefraction/manual/{YOUR_OBJECT_NAME}/` folder.
+
+### 2. Generate mask
+
+Next step, you need to generate a binary mask for this object so that a refractive flow can be calculated. This step is completed in Unity 3D template.
+
+In `RefractiveMask` project, open `ManualMask` scene. There's no compulsory modifications here, just click `Run` button and the related masks will be generated into the same folder in calibration process.
+
+### 3. Generate refractive flow
+
+We add this function into the original script, so just run
+
+```shell
+python generate_refractive_flow.py manual
+```
+
+You will see refractive flow images generated in `HDRPRefraction/manual/refractive_flow`.
